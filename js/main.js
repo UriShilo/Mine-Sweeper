@@ -3,6 +3,7 @@ console.log('Main is Connected')
 
 const MINE = '💣'
 const SAFE = ''
+const FLAG = '🚩'
 
 
 var gBoard
@@ -22,21 +23,15 @@ function initGame() {
 
 function buildBoard(rows, cols) {
 
-  //static code
-  // return [
-  //   [{ isMine: false }, { isMine: false }, { isMine: false }, { isMine: false }],
-  //   [{ isMine: false }, { isMine: false }, { isMine: false }, { isMine: false }],
-  //   [{ isMine: false }, { isMine: false }, { isMine: false }, { isMine: false }],
-  //   [{ isMine: false }, { isMine: false }, { isMine: false }, { isMine: false }]
-  // ]
-
-
-  //dynamic code
   var board = []
   for (var i = 0; i < rows; i++) {
     board.push([])
     for (var j = 0; j < cols; j++) {
-      board[i].push({ isMine: false })
+      board[i].push({
+        isShown: false,
+        isMine: false,
+        isMarked: false
+      })
     }
   }
   return board
@@ -91,7 +86,9 @@ function renderBoard(board) {
       // const cell = (board[i][j].isMine) ? MINE : ''
       const className = `cell`
       const data = `data-i ="${i}" data-j ="${j}"`
-      strHTML += `\t<td class="${className}" ${data} onclick="onCellClicked(this,gBoard)"></td>\n`
+      strHTML += `\t<td class="${className}" ${data} 
+      onclick="onCellClicked(this,gBoard)"
+      oncontextmenu="toggleFlag(gBoard,${i},${j});return false;"></td>\n`
     }
 
     strHTML += `</tr>\n`
@@ -104,14 +101,36 @@ function renderBoard(board) {
 }
 
 function onCellClicked(elCell, board) {
-  // console.log(elCell)
   const cell = board[elCell.dataset.i][elCell.dataset.j]
+  if (cell.isShown || cell.isMarked) {
+    console.error('you can not revel flagged cells!')
+    return
+  }
+
+  console.log(elCell)
+
+  cell.isShown = true
+
+  if (cell.isMarked === true) return
   if (cell.isMine) {
     elCell.innerText = MINE
   } else {
     elCell.innerText = cell.minesAroundCount
   }
+}
 
+function toggleFlag(board, i, j) {
+  const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+  if (elCell.innerText !== FLAG &&
+    elCell.innerText !== SAFE) {
+    console.error(i, j, 'you can not flag previously reveled cells!')
+    return
+  }
 
+  console.log('flag toggled at', i, j)
+  //model
+  board[i][j].isMarked ^= true
+  //DOM
+  elCell.innerText = board[i][j].isMarked ? FLAG : SAFE
 }
 
