@@ -143,7 +143,7 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
         continue
       }
 
-      if (!board[i][j].isMine) {
+      if (board[i][j].isMine===false) {
         cellsPos.push({
           i,
           j,
