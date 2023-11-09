@@ -2,24 +2,80 @@
   box-sizing: border-box;
 }
 
+:root{
+  --bgc:green;
+  --box-shadow: 0px 4px 13px 4px rgba(0, 0, 0, 0.35);
+}
+
+body{
+  text-align: center;
+  background-color: var(--bgc);
+
+}
+
 h1 {
-  color: red;
+  font-size: 4em ;
+  color: yellow;
+  /* text-decoration: underline; */
+  margin-bottom: 0.2em;
+}
+
+h2{
+  color: yellow;
+
+  margin: auto;
+  border-top: 0.15em dashed yellow ;
+  border-bottom: 0.15em dashed yellow ;
+  padding: 0.5em;
+  margin-bottom: 0.6em;
+  font-size: 2em;
+  width: 60%;
+}
+
+button{
+  font-size: 1.3em;
+  font-weight: 700;
+  padding: 0.3em 0.5em;
+  border: none;
+  border-radius: 0.3em;
+  margin: 0.4em;
+  background: radial-gradient( grey, grey, lightblue);
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+}
+
+table{
+  border-spacing: 0.8em;
 }
 
 .table-container {
-  border: 0.05em solid black;
+  /* border: 0.05em solid black; */
+  margin: auto;
+  /* background-color: black; */
 }
 
 .cell {
   border: 0.05em solid black;
   text-align: center;
-  padding: 3px 3px;
+  font-weight: 600;
+  padding: 0;
   font-size: 1.5em;
   width: 2em;
   height: 2em;
   cursor: pointer;
+  background: radial-gradient( grey, grey, grey, lightblue) ;
+  cursor: pointer;
+  border-radius: 0.3em;
+  border: none;
+  margin: 5px;
+  box-shadow: var(--box-shadow);
 }
 
 .smiley-button {
-  display: block;
+    /* display: block; */
+}
+
+.reveled{
+  /* background: radial-gradient(  rgb(152, 103, 18),brown, brown, black) ; */
+  background: radial-gradient( rgb(239, 205, 142), wheat, wheat, white) ;
 }

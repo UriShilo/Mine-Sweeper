@@ -28,7 +28,11 @@ function setLevel(size = 4, mines = 2, lives = 2) {
 }
 //size = 4, mines = 2, lives = 2
 function initGame() {
+
   gGame.isOn = false
+  const elButton = document.querySelector('.smiley-button')
+  elButton.innerText = '😀'
+
   // gGame.lives = lives
   gGame.shownCount = 0
   // gLevel.size = size
@@ -161,8 +165,8 @@ function onCellClicked(elCell, board) {
   }
 
   gGame.shownCount++
-  elCell.innerText = cell.minesAroundCount
-
+  elCell.innerText = (cell.minesAroundCount)?cell.minesAroundCount:''
+  elCell.classList.add('reveled')
 
   ifGameOver()
 }
