@@ -49,6 +49,28 @@ table {
   border-spacing: 0.8em;
 }
 
+.modal {
+  font-size: 3vw;
+
+  position: absolute;
+  left: 35%;
+  top: 35%;
+  width: 30%;
+  height: 30%;
+  background: radial-gradient(rgb(239, 205, 142), wheat, wheat, white);
+  box-shadow: var(--box-shadow);
+}
+
+.message {
+  font-size: 5vw;
+
+  font-weight: 700;
+}
+
+.hidden {
+  display: none;
+}
+
 .table-container {
   /* border: 0.05em solid black; */
   margin: auto;
@@ -73,7 +95,9 @@ table {
 }
 
 .smiley-button {
-  /* display: block; */
+  font-size: 2em;
+  padding: 0;
+  margin: auto;
 }
 
 .reveled {

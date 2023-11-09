@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body onload="initGame()">
+<body onload="setLevel()">
   <h1>Mine Sweeper</h1>
   <h2 class="lives-counter"><span></span> Lives Left</h2>
 
@@ -16,23 +16,21 @@
     <button class="smiley-button" onclick="initGame()"></button>
   </div>
 
-  <button onclick="setLevel(4,2,2)">Beginner</button>
-  <button onclick="setLevel(8,14,3)">Medium</button>
-  <button onclick="setLevel(12,32,3)">Expert</button>
+  <button onclick="setLevel(4,2)">Beginner</button>
+  <button onclick="setLevel(8,14)">Medium</button>
+  <button onclick="setLevel(12,32)">Expert</button>
 
-  <p></p>
+  <div class="modal ">
+    <span class="message"></span>
+    <button onclick="initGame()">Play Again</button>
+  </div>
 
- 
-    <table class="table-container">
-      <tbody class="board"></tbody>
-    </table>
- 
-
+  <table class="table-container">
+    <tbody class="board"></tbody>
+  </table>
 
   <footer>
     <p>Uri Shilo</p>
-    <a></a>
-
   </footer>
 
   <script src="js/util.js"></script>
