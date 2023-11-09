@@ -2,31 +2,55 @@
 console.log('Main is Connected')
 
 const MINE = '💣'
+const EXPLOSION = '🔥'
 const SAFE = ''
 const FLAG = '🚩'
-
+const gLevel = {
+  size: 4,
+  mines: 3,
+}
+const gGame = {
+  isOn: false,
+  shownCount: 0,
+  markedCount: 0,
+  secsPassed: 0,
+  lives: 3
+}
 
 var gBoard
 
-function initGame() {
-  console.log('the game has began')
+function initGame(size = 4, mines = 2, lives = 2) {
+  gLevel.size = size
+  gLevel.mines = mines
+  gGame.lives = lives
 
-  gBoard = buildBoard(4, 4)
-  setMines(gBoard, 2)
+  updateLivesCounter()
+
+  gBoard = buildBoard(size)
+
+  //player first click is registered
+  //there for i need to eddit onCellClicked
+
+  //set mines in not alowed to start unless we registered a click
+
+  setMines(gBoard, mines)
+
   setMineNegsCount(gBoard)
 
   renderBoard(gBoard)
 
+  gGame.isOn = true
+  console.log('the game has began')
+
 
 }
 
-
-function buildBoard(rows, cols) {
+function buildBoard(size) {
 
   var board = []
-  for (var i = 0; i < rows; i++) {
+  for (var i = 0; i < size; i++) {
     board.push([])
-    for (var j = 0; j < cols; j++) {
+    for (var j = 0; j < size; j++) {
       board[i].push({
         isShown: false,
         isMine: false,
@@ -37,17 +61,16 @@ function buildBoard(rows, cols) {
   return board
 }
 
-
 function setMines(board, mineAmount) {
   //static code
-  // board[0][0].isMine = true
-  // board[2][2].isMine = true
+  board[0][0].isMine = true
+  board[2][2].isMine = true
 
   //dynamic code
-  for (var i = 0; i < mineAmount; i++) {
-    const cellPos = getPosOfRandomSafeCell(board)
-    board[cellPos.i][cellPos.j].isMine = true
-  }
+  // for (var i = 0; i < mineAmount; i++) {
+  //   const cellPos = getPosOfRandomSafeCell(board)
+  //   board[cellPos.i][cellPos.j].isMine = true
+  // }
 
 }
 
@@ -59,23 +82,6 @@ function setMineNegsCount(board) {
     }
   }
 }
-
-function countMineNegs(board, rowIdx, colIdx) {
-  var mineCount = 0
-  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-    if (i < 0 || i >= board.length) continue
-
-    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-      if (j < 0 || j >= board[i].length) continue
-      if (i === rowIdx && j === colIdx) continue
-      const cell = board[i][j]
-      if (cell.isMine === true) mineCount++
-    }
-  }
-  return mineCount
-}
-
-
 
 function renderBoard(board) {
   var strHTML = ``
@@ -101,9 +107,15 @@ function renderBoard(board) {
 }
 
 function onCellClicked(elCell, board) {
+  // the eddit will be that if the game in not one we register the cell position and sent it to set mines
+  if (!gGame.isOn) return
   const cell = board[elCell.dataset.i][elCell.dataset.j]
-  if (cell.isShown || cell.isMarked) {
+  if (cell.isMarked) {
     console.error('you can not revel flagged cells!')
+    return
+  }
+  if (cell.isShown) {
+    console.error('this cell is already reveled')
     return
   }
 
@@ -111,15 +123,34 @@ function onCellClicked(elCell, board) {
 
   cell.isShown = true
 
-  if (cell.isMarked === true) return
+  // if (cell.isMarked === true) return
   if (cell.isMine) {
+    //model
+    gGame.lives--
+    gLevel.mines--
+    gGame.shownCount++
+    //DOM
+    updateLivesCounter()
     elCell.innerText = MINE
-  } else {
-    elCell.innerText = cell.minesAroundCount
+    setTimeout(() => { elCell.innerText = EXPLOSION }, 400)
+    ifGameOver()
+    return
   }
+
+  if (cell.minesAroundCount === 0) {
+    clickSurroundingCells(elCell.dataset.i, elCell.dataset.j, board)
+  }
+
+  gGame.shownCount++
+  elCell.innerText = cell.minesAroundCount
+
+
+  ifGameOver()
 }
 
 function toggleFlag(board, i, j) {
+  if (!gGame.isOn) return
+
   const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
   if (elCell.innerText !== FLAG &&
     elCell.innerText !== SAFE) {
@@ -132,5 +163,29 @@ function toggleFlag(board, i, j) {
   board[i][j].isMarked ^= true
   //DOM
   elCell.innerText = board[i][j].isMarked ? FLAG : SAFE
+  ifGameOver()
+}
+
+function updateLivesCounter() {
+  const livesCounter = document.querySelector('.lives-counter span')
+  livesCounter.innerText = gGame.lives
+}
+
+function ifGameOver() {
+  console.log(gGame.lives)
+  if (gGame.lives === 0) {
+    gGame.isOn = false
+    console.log('you lost')
+    return
+  }
+  console.log('flagged mines:', countFlaggedMines(gBoard), '|', 'mines on board:', gLevel.mines)
+  console.log('are all the safe cells reveled?:', gGame.shownCount === gLevel.size ** 2 - gLevel.mines)
+  const safeCellsOnBoard = gLevel.size ** 2 - gLevel.mines
+
+  if (gGame.shownCount === safeCellsOnBoard &&
+    countFlaggedMines(gBoard) === gLevel.mines) {
+    gGame.isOn = false
+    console.log('you won')
+  }
 }
 

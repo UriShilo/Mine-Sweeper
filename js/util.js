@@ -18,7 +18,7 @@ function getPosOfRandomSafeCell(matrix) {
   // const randomCellPos =cellsPos.splice(getRandomInteger(0, cellsPos.length), 1)[0]
   // const randomCellPos = cellsPos.splice(Math.floor(Math.random() * cellsPos.length), 1)[0]
   const randomCellPos = cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
-  
+
   return randomCellPos
 }
 
@@ -28,6 +28,47 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+function countFlaggedMines(board) {
+  var count = 0
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board[i].length; j++) {
+      const cell = board[i][j]
+      if (cell.isMine && cell.isMarked) count++
+    }
+  }
+  return count
+}
+
+function countMineNegs(board, rowIdx, colIdx) {
+  var mineCount = 0
+  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+    if (i < 0 || i >= board.length) continue
+
+    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+      if (j < 0 || j >= board[i].length) continue
+      if (i === rowIdx && j === colIdx) continue
+      const cell = board[i][j]
+      if (cell.isMine === true) mineCount++
+    }
+  }
+  return mineCount
+}
+
+function clickSurroundingCells(rowIdx, colIdx, board) { 
+  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+    if (i < 0 || i >= board.length) continue
+
+    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+      if (j < 0 || j >= board[i].length) continue
+      if (i === rowIdx && j === colIdx) continue
+      const cell = board[i][j]
+      if(cell.isShown)continue
+      const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+      // console.log(elCell)
+      onCellClicked(elCell,board)
+    }
+  }
+}
 // function getPosOfRandomCell(matrix, value) {
 //   var cellsPos = []
 //   for (var i = 0; i < matrix.length; i++) {
