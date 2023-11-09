@@ -18,6 +18,7 @@ const gGame = {
 }
 
 var gBoard
+
 function setLevel(size = 4, mines = 2, lives = 2) {
   gGame.lives = lives
   gLevel.size = size
@@ -26,29 +27,16 @@ function setLevel(size = 4, mines = 2, lives = 2) {
   initGame()
 
 }
-//size = 4, mines = 2, lives = 2
 function initGame() {
 
-  gGame.isOn = false
   const elButton = document.querySelector('.smiley-button')
   elButton.innerText = '😀'
-
-  // gGame.lives = lives
   gGame.shownCount = 0
-  // gLevel.size = size
-  // gLevel.mines = mines
   updateLivesCounter()
   gBoard = buildBoard(gLevel.size)
   renderBoard(gBoard)
+  gGame.isOn = true
 
-  //player first click is registered
-  //there for i need to edit onCellClicked
-  //set mines in not allowed to start unless we registered a click
-  // setMines(gBoard, mines)
-
-  // setMineNegsCount(gBoard)
-  // gGame.isOn = true
-  // console.log('the game has began')
 }
 
 function buildBoard(size) {
@@ -68,22 +56,14 @@ function buildBoard(size) {
 }
 
 function setMines(board, mineAmount, rowIdx, colIdx) {
-  //static code
-  // board[2][1].isMine = true
-  // board[3][2].isMine = true
-
-  //dynamic code
   for (var i = 0; i < mineAmount; i++) {
     const cellPos = getPosOfRandomSafeCell(board, rowIdx, colIdx)
     board[cellPos.i][cellPos.j].isMine = true
   }
 
   setMineNegsCount(board)
-  gGame.isOn = true
   console.log('the game has began')
   console.log(gBoard)
-
-
 }
 
 function setMineNegsCount(board) {
@@ -101,23 +81,16 @@ function renderBoard(board) {
     strHTML += `\n<tr>\n`
 
     for (var j = 0; j < board[i].length; j++) {
-      // const cell = (board[i][j].isMine) ? MINE : ''
       const className = `cell`
       const data = `data-i ="${i}" data-j ="${j}"`
       const position = JSON.stringify({ i, j })
-      // console.log(pos)
-      // console.log(pos.i)
-      // console.log(pos.j)
       strHTML += `\t<td class="${className}" ${data} 
       onclick="onCellClicked(this,gBoard)"
       oncontextmenu='toggleFlag(gBoard,${position});return false;'></td>\n`
     }
-
     strHTML += `</tr>\n`
   }
-  // console.log(strHTML)
   const elBoard = document.querySelector('.board')
-  // console.log(elBoard)
 
   elBoard.innerHTML = strHTML
 }
@@ -125,13 +98,14 @@ function renderBoard(board) {
 function onCellClicked(elCell, board) {
   const i = +elCell.dataset.i
   const j = +elCell.dataset.j
-  // the eddit will be that if the game in not one we register the cell position and sent it to set mines
-  // if (!gGame.isOn) return
+  /////////////////////////////////////////////
+
+  if (!gGame.isOn) return
+  if (gGame.shownCount === 0) setMines(board, gLevel.mines, i, j)
 
 
 
-  if (!gGame.isOn) setMines(board, gLevel.mines, i, j)
-
+  ///////////////////////////////////////////////
   const cell = board[i][j]
   if (cell.isMarked) {
     console.error('you can not revel flagged cells!')
@@ -142,11 +116,8 @@ function onCellClicked(elCell, board) {
     return
   }
 
-  console.log(elCell)
-
   cell.isShown = true
 
-  // if (cell.isMarked === true) return
   if (cell.isMine) {
     //model
     gGame.lives--
@@ -165,19 +136,16 @@ function onCellClicked(elCell, board) {
   }
 
   gGame.shownCount++
-  elCell.innerText = (cell.minesAroundCount)?cell.minesAroundCount:''
+  elCell.innerText = (cell.minesAroundCount) ? cell.minesAroundCount : ''
   elCell.classList.add('reveled')
 
   ifGameOver()
 }
 
 function toggleFlag(board, pos) {
-  // console.log('in')
   if (!gGame.isOn) return
   const i = pos.i
   const j = pos.j
-  // console.log(i)
-  // console.log(j)
 
   const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
   if (elCell.innerText !== FLAG &&
@@ -200,7 +168,6 @@ function updateLivesCounter() {
 }
 
 function ifGameOver() {
-  // console.log(gGame.lives)
   if (gGame.lives === 0) {
     gGame.isOn = false
     console.log('you lost')

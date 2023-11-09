@@ -9,11 +9,7 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[i].length; j++) {
 
-      //the clicked cell can not be a mine?
-      
-      // console.log('i:',i,'j:',j)
       if (i === rowIdx && j === colIdx){
-        // console.log('skipped')
         continue
       } 
 
@@ -26,8 +22,6 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
     }
   }
   if (cellsPos.length === 0) return null
-  // const randomCellPos =cellsPos.splice(getRandomInteger(0, cellsPos.length), 1)[0]
-  // const randomCellPos = cellsPos.splice(Math.floor(Math.random() * cellsPos.length), 1)[0]
   const randomCellPos = cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
 
   return randomCellPos
@@ -85,24 +79,6 @@ function clickSurroundingCells(rowIdx, colIdx, board) {
     }
   }
 }
-// function getPosOfRandomCell(matrix, value) {
-//   var cellsPos = []
-//   for (var i = 0; i < matrix.length; i++) {
-//     for (var j = 0; j < matrix[i].length; j++) {
-//       if (matrix[i][j] === value) {
-//         cellsPos.push({
-//           i,
-//           j,
-//         })
-//       }
-//     }
-//   }
-//   if (cellsPos.length === 0) return null
-//   // const randomCellPos =cellsPos.splice(getRandomInteger(0, cellsPos.length), 1)[0]
-//   // const randomCellPos = cellsPos.splice(Math.floor(Math.random() * cellsPos.length), 1)[0]
-//   const randomCellPos = cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
 
-//   return randomCellPos
-// }
 
 

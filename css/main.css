@@ -2,49 +2,50 @@
   box-sizing: border-box;
 }
 
-:root{
-  --bgc:green;
+:root {
+  --bgc: green;
   --box-shadow: 0px 4px 13px 4px rgba(0, 0, 0, 0.35);
 }
 
-body{
+body {
   text-align: center;
   background-color: var(--bgc);
+  font-family: sans-serif;
 
 }
 
 h1 {
-  font-size: 4em ;
+  font-size: 4em;
   color: yellow;
   /* text-decoration: underline; */
   margin-bottom: 0.2em;
 }
 
-h2{
+h2 {
   color: yellow;
 
   margin: auto;
-  border-top: 0.15em dashed yellow ;
-  border-bottom: 0.15em dashed yellow ;
+  border-top: 0.15em dashed yellow;
+  border-bottom: 0.15em dashed yellow;
   padding: 0.5em;
   margin-bottom: 0.6em;
   font-size: 2em;
   width: 60%;
 }
 
-button{
+button {
   font-size: 1.3em;
   font-weight: 700;
   padding: 0.3em 0.5em;
   border: none;
   border-radius: 0.3em;
   margin: 0.4em;
-  background: radial-gradient( grey, grey, lightblue);
+  background: radial-gradient(grey, grey, lightblue);
   cursor: pointer;
   box-shadow: var(--box-shadow);
 }
 
-table{
+table {
   border-spacing: 0.8em;
 }
 
@@ -63,7 +64,7 @@ table{
   width: 2em;
   height: 2em;
   cursor: pointer;
-  background: radial-gradient( grey, grey, grey, lightblue) ;
+  background: radial-gradient(grey, grey, grey, lightblue);
   cursor: pointer;
   border-radius: 0.3em;
   border: none;
@@ -72,10 +73,10 @@ table{
 }
 
 .smiley-button {
-    /* display: block; */
+  /* display: block; */
 }
 
-.reveled{
+.reveled {
   /* background: radial-gradient(  rgb(152, 103, 18),brown, brown, black) ; */
-  background: radial-gradient( rgb(239, 205, 142), wheat, wheat, white) ;
+  background: radial-gradient(rgb(239, 205, 142), wheat, wheat, white);
 }
