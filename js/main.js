@@ -7,26 +7,34 @@ const SAFE = ''
 const FLAG = '🚩'
 const gLevel = {
   size: 4,
-  mines: 3,
+  mines: 2,
 }
 const gGame = {
   isOn: false,
   shownCount: 0,
   markedCount: 0,
   secsPassed: 0,
-  lives: 3
+  lives: 2
 }
 
 var gBoard
-
-function initGame(size = 4, mines = 2, lives = 2) {
-  gGame.isOn=false
+function setLevel(size = 4, mines = 2, lives = 2) {
   gGame.lives = lives
-  gGame.shownCount =0
   gLevel.size = size
   gLevel.mines = mines
+  updateLivesCounter
+  initGame()
+
+}
+//size = 4, mines = 2, lives = 2
+function initGame() {
+  gGame.isOn = false
+  // gGame.lives = lives
+  gGame.shownCount = 0
+  // gLevel.size = size
+  // gLevel.mines = mines
   updateLivesCounter()
-  gBoard = buildBoard(size)
+  gBoard = buildBoard(gLevel.size)
   renderBoard(gBoard)
 
   //player first click is registered
@@ -193,6 +201,9 @@ function ifGameOver() {
     gGame.isOn = false
     console.log('you lost')
     revelAllCells(gBoard)
+
+    const elButton = document.querySelector('.smiley-button')
+    elButton.innerText = '🤯'
     return
   }
   console.log('flagged mines:', countFlaggedMines(gBoard), '|', 'mines on board:', gLevel.mines)
@@ -205,6 +216,9 @@ function ifGameOver() {
     countFlaggedMines(gBoard) === gLevel.mines) {
     gGame.isOn = false
     console.log('you won')
+    const elButton = document.querySelector('.smiley-button')
+    elButton.innerText = '😎'
+
   }
 }
 

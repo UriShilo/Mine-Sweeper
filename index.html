@@ -11,9 +11,10 @@
 <body onload="initGame()">
   <h1>Mine Sweeper</h1>
   <h2 class="lives-counter"><span></span> Lives Left</h2>
-  <button onclick="initGame(4,2,2)">Beginner</button>
-  <button onclick="initGame(8,14,3)">Medium</button>
-  <button onclick="initGame(12,32,3)">Expert</button>
+  <button class="smiley-button" onclick="initGame()">😀</button>
+  <button onclick="setLevel(4,2,2)">Beginner</button>
+  <button onclick="setLevel(8,14,3)">Medium</button>
+  <button onclick="setLevel(12,32,3)">Expert</button>
   <p></p>
   <table class="table-container">
     <tbody class="board"></tbody>
