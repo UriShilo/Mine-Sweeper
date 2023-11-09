@@ -2,11 +2,22 @@
 console.log('Util is Connected')
 
 
-function getPosOfRandomSafeCell(matrix) {
+function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
+  console.log('i:',rowIdx,'j:',colIdx)
   var cellsPos = []
-  for (var i = 0; i < matrix.length; i++) {
-    for (var j = 0; j < matrix[i].length; j++) {
-      if (matrix[i][j].isMine === false) {
+
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board[i].length; j++) {
+
+      //the clicked cell can not be a mine?
+      
+      // console.log('i:',i,'j:',j)
+      if (i === rowIdx && j === colIdx){
+        // console.log('skipped')
+        continue
+      } 
+
+      if (board[i][j].isMine === false) {
         cellsPos.push({
           i,
           j,
@@ -54,18 +65,23 @@ function countMineNegs(board, rowIdx, colIdx) {
   return mineCount
 }
 
-function clickSurroundingCells(rowIdx, colIdx, board) { 
+function clickSurroundingCells(rowIdx, colIdx, board) {
+  console.log(rowIdx)
+  console.log(colIdx)
+
   for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
     if (i < 0 || i >= board.length) continue
 
-    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+    for (var j = (colIdx - 1); j <= (colIdx + 1); j++) {
+      console.log(j)
       if (j < 0 || j >= board[i].length) continue
       if (i === rowIdx && j === colIdx) continue
+
       const cell = board[i][j]
-      if(cell.isShown)continue
+      if (cell.isShown) continue
       const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
       // console.log(elCell)
-      onCellClicked(elCell,board)
+      onCellClicked(elCell, board)
     }
   }
 }
