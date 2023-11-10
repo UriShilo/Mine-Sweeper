@@ -10,19 +10,17 @@ const FLAG = '🚩'
 var gLevel
 var gGame
 var gBoard
-
-// function setLevel(size = 4, mines = 2) {
-//   gLevel.mines = mines
-//   gLevel.size = size
-//   initGame()
-// }
+var timerInterval
 
 function initGame(size = 4, mines = 2, lives = 2) {
+  clearInterval(timerInterval)
   gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    lives: lives
+    lives: lives,
+    secsPassed: 0,
+    timerInterval: null
   }
   gLevel = {
     size: size,
@@ -32,6 +30,7 @@ function initGame(size = 4, mines = 2, lives = 2) {
   gBoard = buildBoard(gLevel.size)
   renderBoard(gBoard)
   renderLivesCounter()
+  renderTimer()
   renderReplayButtons(size, mines, lives)
   hideModal()
   gGame.isOn = true
@@ -97,9 +96,12 @@ function onCellClicked(elCell, board) {
   const j = +elCell.dataset.j
   const cell = board[i][j]
 
-  if (cell.isMarked ||cell.isShown) return
+  if (cell.isMarked || cell.isShown) return
 
-  if (isFirstClick()) setMines(board, gLevel.mines, i, j)
+  if (isFirstClick()) {
+    setMines(board, gLevel.mines, i, j)
+    timerInterval = setInterval(() => { UpdateTimer() }, 1000)
+  }
 
   cell.isShown = true
   gGame.shownCount++
@@ -140,10 +142,14 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[i].length; j++) {
 
-      if (i === rowIdx && j === colIdx) {
+
+      const isStartingArea = i >= rowIdx - 1 && i <= rowIdx + 1 && j >= colIdx - 1 && j <= colIdx + 1
+      //old condition: i === rowIdx && j === colIdx
+
+      if (isStartingArea) {
         continue
       }
-      if (board[i][j].isMine === false) {
+      if (!board[i][j].isMine) {
         cellsPos.push({
           i,
           j,
@@ -155,8 +161,6 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
   if (cellsPos.length === 0) return null
 
   const safePosition = cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
-
-  // console.log(safePosition)
   return safePosition
 }
 
@@ -167,6 +171,16 @@ function setMineNegsCount(board) {
       cell.minesAroundCount = countMineNegs(board, i, j)
     }
   }
+}
+
+function UpdateTimer() {
+  gGame.secsPassed++
+  renderTimer()
+}
+
+function renderTimer() {
+  const timer = document.querySelector('.timer span')
+  timer.innerText = gGame.secsPassed
 }
 
 function countMineNegs(board, rowIdx, colIdx) {
@@ -218,10 +232,7 @@ function toggleFlag(board, pos) {
 
   const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
 
-  if (board[i][j].isShown) {
-    console.error(i, j, 'you can not flag previously reveled cells!')
-    return
-  }
+  if (board[i][j].isShown) return
 
   console.log('flag toggled at', i, j)
   //model
@@ -237,13 +248,14 @@ function ifGameOver() {
   if (gGame.lives === 0) {
     gGame.isOn = false
     revelAllCells(gBoard)
+    clearInterval(timerInterval)
     showModal('you lost\n🤯\n\n')
     elSmileyButton.innerText = '🤯'
   } else {
 
-    console.log('flagged mines:', countFlaggedMines(gBoard), '|', 'mines on board:', gLevel.mines)
-    console.log('are all the safe cells reveled?:', gGame.shownCount === gLevel.size ** 2 - gLevel.mines)
-    console.log(gGame.shownCount)
+    // console.log('flagged mines:', countFlaggedMines(gBoard), '|', 'mines on board:', gLevel.mines)
+    // console.log('are all the safe cells reveled?:', gGame.shownCount === gLevel.size ** 2 - gLevel.mines)
+    // console.log(gGame.shownCount)
 
 
     const safeCellsOnBoard = gLevel.size ** 2 - gLevel.mines
@@ -252,6 +264,7 @@ function ifGameOver() {
       countFlaggedMines(gBoard) === gLevel.mines) {
       gGame.isOn = false
       elSmileyButton.innerText = '😎'
+      clearInterval(timerInterval)
       showModal('you won!\n😎\n\n')
     }
   }

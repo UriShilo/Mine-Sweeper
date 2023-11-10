@@ -40,7 +40,6 @@ table {
 
 .lives-counter {
   color: yellow;
-
   margin: auto;
   border-top: 0.15em dashed yellow;
   border-bottom: 0.15em dashed yellow;
@@ -50,9 +49,20 @@ table {
   width: 60%;
 }
 
+.hud{
+ width: 60%;
+ margin: auto;
+}
+.timer{
+  display: inline;
+  position: absolute;
+  left: 20vw;
+  font-size: 2em;
+  margin-top: 0vh;
+}
 
 .modal {
-  font-size: 3vw;
+  font-size: 3vh;
 
   position: absolute;
   left: 35%;
@@ -64,7 +74,7 @@ table {
 }
 
 .message {
-  font-size: 5vw;
+  font-size: 5vh;
 
   font-weight: 700;
 }

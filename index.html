@@ -10,17 +10,16 @@
 
 <body onload="initGame()">
   <h1>Mine Sweeper</h1>
-  <h2 class="lives-counter"><span ></span> Lives Left</h2>
+  <h2 class="lives-counter"><span></span> Lives Left</h2>
 
-
-  <div>
-    <h2 class="timer"></h2>
+  <div class="hud">
+    <h2 class="timer">Timer: <span>0</span></h2>
     <button class="smiley-button" onclick="initGame()"></button>
+    <br>
+    <button onclick="initGame(4,2,2)">Beginner</button>
+    <button onclick="initGame(8,14,3)">Medium</button>
+    <button onclick="initGame(12,32,3)">Expert</button>
   </div>
-
-  <button onclick="initGame(4,2,2)">Beginner</button>
-  <button onclick="initGame(8,14,3)">Medium</button>
-  <button onclick="initGame(12,32,3)">Expert</button>
 
   <div class="modal ">
     <span class="message"></span>
@@ -32,7 +31,7 @@
   </table>
 
   <footer>
-    <p>Uri Shilo</p>
+    <p>Uri Shilo - Coding Academy - October 2023 - First Sprint</p>
   </footer>
 
   <script src="js/util.js"></script>
