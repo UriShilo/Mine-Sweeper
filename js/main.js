@@ -6,34 +6,33 @@ const EXPLOSION = '🔥'
 const SAFE = ''
 const FLAG = '🚩'
 
-var gLevel = {
-  size: 4,
-  mines: 2,
-}
+
+var gLevel
 var gGame
 var gBoard
 
-function setLevel(size = 4, mines = 2) {
-  gLevel.mines = mines
-  gLevel.size = size
-  initGame()
-}
+// function setLevel(size = 4, mines = 2) {
+//   gLevel.mines = mines
+//   gLevel.size = size
+//   initGame()
+// }
 
-function initGame() {
+function initGame(size = 4, mines = 2, lives = 2) {
   gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    secsPassed: 0,
-    lives: 3
+    lives: lives
   }
-
-  const elSmileyButton = document.querySelector('.smiley-button')
-  elSmileyButton.innerText = '😀'
+  gLevel = {
+    size: size,
+    mines: mines,
+  }
 
   gBoard = buildBoard(gLevel.size)
   renderBoard(gBoard)
   renderLivesCounter()
+  renderReplayButtons(size, mines, lives)
   hideModal()
   gGame.isOn = true
 
@@ -82,23 +81,25 @@ function renderLivesCounter() {
   livesCounter.innerText = gGame.lives
 }
 
+function renderReplayButtons(size, mines, lives) {
+  const elSmileyButton = document.querySelector('.smiley-button')
+  elSmileyButton.onclick = () => { initGame(size, mines, lives) }
+  elSmileyButton.innerText = '😀'
+
+  const elReplayButton = document.querySelector('.modal button')
+  elReplayButton.onclick = () => { initGame(size, mines, lives) }
+}
+
 function onCellClicked(elCell, board) {
   if (!gGame.isOn) return
 
   const i = +elCell.dataset.i
   const j = +elCell.dataset.j
+  const cell = board[i][j]
+
+  if (cell.isMarked ||cell.isShown) return
 
   if (isFirstClick()) setMines(board, gLevel.mines, i, j)
-
-  const cell = board[i][j]
-  if (cell.isMarked) {
-    console.log('you can not revel flagged cells!')
-    return
-  }
-  if (cell.isShown) {
-    console.log('this cell is already reveled')
-    return
-  }
 
   cell.isShown = true
   gGame.shownCount++
@@ -106,6 +107,7 @@ function onCellClicked(elCell, board) {
   if (cell.isMine) {
     handleMineClick(elCell)
   } else {
+
     if (cell.minesAroundCount === 0) {
       clickSurroundingCells(i, j, board)
     }
@@ -129,11 +131,10 @@ function setMines(board, mineAmount, rowIdx, colIdx) {
 
   setMineNegsCount(board)
   console.log('the game has begun')
-  console.log(gBoard)
 }
 
 function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
-  console.log('i:', rowIdx, 'j:', colIdx)
+  // console.log('i:', rowIdx, 'j:', colIdx)
   var cellsPos = []
 
   for (var i = 0; i < board.length; i++) {
@@ -142,8 +143,7 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
       if (i === rowIdx && j === colIdx) {
         continue
       }
-
-      if (board[i][j].isMine===false) {
+      if (board[i][j].isMine === false) {
         cellsPos.push({
           i,
           j,
@@ -154,7 +154,10 @@ function getPosOfRandomSafeCell(board, rowIdx, colIdx) {
 
   if (cellsPos.length === 0) return null
 
-  return cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
+  const safePosition = cellsPos.splice(getRandomInt(0, cellsPos.length), 1)[0]
+
+  // console.log(safePosition)
+  return safePosition
 }
 
 function setMineNegsCount(board) {
@@ -192,21 +195,17 @@ function handleMineClick(elCell) {
 }
 
 function clickSurroundingCells(rowIdx, colIdx, board) {
-  console.log(rowIdx)
-  console.log(colIdx)
 
   for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
     if (i < 0 || i >= board.length) continue
 
     for (var j = (colIdx - 1); j <= (colIdx + 1); j++) {
-      console.log(j)
       if (j < 0 || j >= board[i].length) continue
       if (i === rowIdx && j === colIdx) continue
 
       const cell = board[i][j]
       if (cell.isShown) continue
       const elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
-      // console.log(elCell)
       onCellClicked(elCell, board)
     }
   }
@@ -241,6 +240,12 @@ function ifGameOver() {
     showModal('you lost\n🤯\n\n')
     elSmileyButton.innerText = '🤯'
   } else {
+
+    console.log('flagged mines:', countFlaggedMines(gBoard), '|', 'mines on board:', gLevel.mines)
+    console.log('are all the safe cells reveled?:', gGame.shownCount === gLevel.size ** 2 - gLevel.mines)
+    console.log(gGame.shownCount)
+
+
     const safeCellsOnBoard = gLevel.size ** 2 - gLevel.mines
 
     if (gGame.shownCount === safeCellsOnBoard &&
@@ -266,7 +271,6 @@ function hideModal() {
   elModal.classList.add('hidden')
 }
 
-
 function revelAllCells(board) {
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[i].length; j++) {
@@ -278,7 +282,6 @@ function revelAllCells(board) {
     }
   }
 }
-
 
 function countFlaggedMines(board) {
   var count = 0

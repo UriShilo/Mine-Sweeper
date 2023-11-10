@@ -21,17 +21,6 @@ h1 {
   margin-bottom: 0.2em;
 }
 
-h2 {
-  color: yellow;
-
-  margin: auto;
-  border-top: 0.15em dashed yellow;
-  border-bottom: 0.15em dashed yellow;
-  padding: 0.5em;
-  margin-bottom: 0.6em;
-  font-size: 2em;
-  width: 60%;
-}
 
 button {
   font-size: 1.3em;
@@ -48,6 +37,19 @@ button {
 table {
   border-spacing: 0.8em;
 }
+
+.lives-counter {
+  color: yellow;
+
+  margin: auto;
+  border-top: 0.15em dashed yellow;
+  border-bottom: 0.15em dashed yellow;
+  padding: 0.5em;
+  margin-bottom: 0.6em;
+  font-size: 2em;
+  width: 60%;
+}
+
 
 .modal {
   font-size: 3vw;
