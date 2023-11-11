@@ -4,13 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mine Sweeper - Uri Shilo</title>
+  <title>Mine Sweeper - Uri Shilo </title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body onload="initGame()">
   <h1>Mine Sweeper</h1>
-  <button class="display-mode" onclick="toggleDisplayMode()">Switch to <span>Dark mode</span></button>
+  <button class="special-button display-mode" onclick="toggleDisplayMode()">Switch to <span>Dark mode</span></button>
+  <button class="special-button undo-button" onclick="undoLastMove()">Undo</button>
   <h2 class="lives-counter"><span></span> Lives Left</h2>
 
   <div class="hud">

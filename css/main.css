@@ -4,7 +4,7 @@
 
 :root {
   --bgc: green;
-  --dark-mode-bgc:rgb(33, 77, 3);
+  --dark-mode-bgc: rgb(33, 77, 3);
   --color: yellow;
   --dark-mode-color: black;
 
@@ -18,18 +18,18 @@ body {
   font-family: sans-serif;
 }
 
-body.dark-mode{
+body.dark-mode {
   background-color: var(--dark-mode-bgc);
 }
 
 h1 {
-  font-size: min(10vw, 4em);
+  font-size: min(9.5vw, 4em);
   color: var(--color);
   /* text-decoration: underline; */
   margin-bottom: 0.2em;
 }
 
-h1.dark-mode{
+h1.dark-mode {
   color: var(--dark-mode-color);
 }
 
@@ -50,17 +50,23 @@ table {
   border-spacing: 0.8em;
 }
 
-.display-mode {
+.special-button {
   position: absolute;
   left: 0;
-  top: 0;
   font-size: 16px;
   font-size: min(2.5vw, 1em);
-
+}
+.display-mode {
+  top: 0;
 }
 
 .display-mode span {
   display: block;
+}
+
+.undo-button{
+  top: min(8.5vw,55px);
+  line-height: 2em;
 }
 
 .lives-counter {
@@ -74,7 +80,7 @@ table {
   width: 60%;
 }
 
-.lives-counter.dark-mode{
+.lives-counter.dark-mode {
   color: var(--dark-mode-color);
   border-color: var(--dark-mode-color);
 }
@@ -143,7 +149,7 @@ table {
   margin: auto;
 }
 
-.reveled {
+.revealed {
   /* background: radial-gradient(  rgb(152, 103, 18),brown, brown, black) ; */
   background: var(--light-gradient);
 }
