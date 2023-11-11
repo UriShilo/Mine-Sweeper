@@ -307,3 +307,18 @@ function countFlaggedMines(board) {
   return count
 }
 
+function toggleDisplayMode() {
+  const body = document.querySelector('body')
+  body.classList.toggle('dark-mode')
+
+  const header = document.querySelector('h1')
+  header.classList.toggle('dark-mode')
+
+  const livesCounter = document.querySelector('.lives-counter')
+  livesCounter.classList.toggle('dark-mode')
+
+  const displayModeButtonSpan = document.querySelector('.display-mode span')
+  const newText = (displayModeButtonSpan.innerText === 'Dark mode') ? 'Light mode' : 'Dark mode'
+  displayModeButtonSpan.innerText = newText
+}
+

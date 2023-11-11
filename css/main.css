@@ -4,26 +4,38 @@
 
 :root {
   --bgc: green;
+  --dark-mode-bgc:rgb(33, 77, 3);
+  --color: yellow;
+  --dark-mode-color: black;
+
   --box-shadow: 0px 4px 13px 4px rgba(0, 0, 0, 0.35);
+  --light-gradient: radial-gradient(rgb(239, 205, 142), wheat, wheat, white);
 }
 
 body {
   text-align: center;
   background-color: var(--bgc);
   font-family: sans-serif;
+}
 
+body.dark-mode{
+  background-color: var(--dark-mode-bgc);
 }
 
 h1 {
-  font-size: 4em;
-  color: yellow;
+  font-size: min(10vw, 4em);
+  color: var(--color);
   /* text-decoration: underline; */
   margin-bottom: 0.2em;
 }
 
+h1.dark-mode{
+  color: var(--dark-mode-color);
+}
+
 
 button {
-  font-size: 1.3em;
+  font-size: min(3vw, 1.3em);
   font-weight: 700;
   padding: 0.3em 0.5em;
   border: none;
@@ -38,26 +50,45 @@ table {
   border-spacing: 0.8em;
 }
 
+.display-mode {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+  font-size: min(2.5vw, 1em);
+
+}
+
+.display-mode span {
+  display: block;
+}
+
 .lives-counter {
-  color: yellow;
+  color: var(--color);
   margin: auto;
-  border-top: 0.15em dashed yellow;
-  border-bottom: 0.15em dashed yellow;
+  border-top: 0.15em dashed var(--color);
+  border-bottom: 0.15em dashed var(--color);
   padding: 0.5em;
   margin-bottom: 0.6em;
   font-size: 2em;
   width: 60%;
 }
 
-.hud{
- width: 60%;
- margin: auto;
+.lives-counter.dark-mode{
+  color: var(--dark-mode-color);
+  border-color: var(--dark-mode-color);
 }
-.timer{
+
+.hud {
+  width: 60%;
+  margin: auto;
+}
+
+.timer {
   display: inline;
   position: absolute;
   left: 20vw;
-  font-size: 2em;
+  font-size: min(5vw, 2em);
   margin-top: 0vh;
 }
 
@@ -69,7 +100,7 @@ table {
   top: 35%;
   width: 30%;
   height: 30%;
-  background: radial-gradient(rgb(239, 205, 142), wheat, wheat, white);
+  background: var(--light-gradient);
   box-shadow: var(--box-shadow);
 }
 
@@ -107,12 +138,12 @@ table {
 }
 
 .smiley-button {
-  font-size: 2em;
+  font-size: min(5vw, 2em);
   padding: 0;
   margin: auto;
 }
 
 .reveled {
   /* background: radial-gradient(  rgb(152, 103, 18),brown, brown, black) ; */
-  background: radial-gradient(rgb(239, 205, 142), wheat, wheat, white);
+  background: var(--light-gradient);
 }
