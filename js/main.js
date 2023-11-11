@@ -5,6 +5,12 @@ const MINE = '💣'
 const EXPLOSION = '🔥'
 const SAFE = ''
 const FLAG = '🚩'
+const fuse = new Audio('sound/fuse.wav')
+const boom = new Audio('sound/boom.wav')
+const click = new Audio('sound/click.wav')
+const medic = new Audio('sound/medic.mp3')
+const allClear = new Audio('sound/all-clear.wav')
+
 
 
 var gLevel
@@ -225,6 +231,7 @@ function clickCell(elCell, board) {
   if (cell.isMine) {
     handleMineClick(elCell)
   } else {
+    click.play()
 
     if (cell.minesAroundCount === 0) {
       clickSurroundingCells(i, j, board)
@@ -244,8 +251,12 @@ function handleMineClick(elCell) {
   gLevel.mines--
   //DOM
   renderLivesCounter()
+  fuse.play()
   elCell.innerText = MINE
-  setTimeout(() => { elCell.innerText = EXPLOSION }, 400)
+  setTimeout(() => {
+    boom.play()
+    elCell.innerText = EXPLOSION
+  }, 800)
 }
 
 function clickSurroundingCells(rowIdx, colIdx, board) {
@@ -289,6 +300,7 @@ function ifGameOver() {
     gGame.isOn = false
     revealAllCells(gBoard)
     clearInterval(timerInterval)
+    setTimeout(() => { medic.play() }, 1200)
     showModal('you lost\n🤯\n\n')
     elSmileyButton.innerText = '🤯'
   } else {
@@ -305,6 +317,7 @@ function ifGameOver() {
       gGame.isOn = false
       elSmileyButton.innerText = '😎'
       clearInterval(timerInterval)
+      setTimeout(() => { allClear.play() }, 400)
       showModal('you won!\n😎\n\n')
     }
   }
